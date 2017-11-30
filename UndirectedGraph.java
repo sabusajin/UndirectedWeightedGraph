@@ -11,6 +11,7 @@ public class UndirectedGraph {
 	static Map<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 	static ArrayList<Integer>[] array = new ArrayList[10];
 	static float [][][] components = new float [10][][];
+	static float[][] output = new float [20][];
 	
 	static int V = 0;
 	
@@ -123,12 +124,19 @@ public class UndirectedGraph {
     // parent[]
     static void printMST(int parent[], int n, float graph[][])
     {
-    	//System.out.println(gbl_ctr);
+    	System.out.println("MST Number "+(ctr_prim+1));
+    	
         System.out.println("Edge   Weight");
         
-        	for (int j = 1; j < n; j++)
-                System.out.println(map.get(ctr_prim).get(parent[j])+" - "+ map.get(ctr_prim).get(j)+"    "+
-                                   graph[j][parent[j]]);
+        	for (int j = 1; j < n; j++){
+        		System.out.println(map.get(ctr_prim).get(parent[j])+" - "+ map.get(ctr_prim).get(j)+"    "+
+                        graph[j][parent[j]]);
+        		output[map.get(ctr_prim).get(parent[j])-1][map.get(ctr_prim).get(j)-1] = graph[j][parent[j]];
+        		output[map.get(ctr_prim).get(j)-1][map.get(ctr_prim).get(parent[j])-1] = graph[j][parent[j]];
+        		
+        	}
+        	
+                
         	
         
         
@@ -195,7 +203,7 @@ public class UndirectedGraph {
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
-		File file = new File("input.txt");
+		File file = new File("input2.txt");
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -218,6 +226,7 @@ public class UndirectedGraph {
 			//System.out.println(Integer.parseInt(line[0])+","+Integer.parseInt(line[1])+","+Float.parseFloat(line[2]));
 		}
 		br.close();
+		System.out.println("Adjacency matrix is->");
 		for (int i=0; i<vertices; i++) {
 			for (int j=0; j<vertices; j++) {
 				System.out.print(adjacencyMat[i][j]+ " ");
@@ -227,19 +236,22 @@ public class UndirectedGraph {
 		}
 		//printGraph(graph, vertices);
 		graph.connectedComponents(graph, vertices);
-		/*if(gbl_ctr==0){
+		for (int i=0;i<vertices;i++)
+			output[i] = new float[V];
+		if(gbl_ctr==0){
 			System.out.println("Graph is connected and hence it has one connected component-");
 		}
 		else {
 			System.out.println("Graph is not connected. There are "+(gbl_ctr+1)+" connected components -");
 		}
+		System.out.println("Connected components are ->");
 		for (int i=0; i<=gbl_ctr;i++){
 			for (int j=0; j<map.get(i).size();j++){
 				System.out.print(map.get(i).get(j)+" ");
 			}
 			System.out.println();
 		}
-		*/
+		
 		
 		/*Map<Integer, Integer> map2 = new HashMap<Integer, Integer>();
 		
@@ -265,6 +277,7 @@ public class UndirectedGraph {
 					
 				}
 			}
+			System.out.println("Minimum spanning trees of the connected components are->");
 			primMST(components[i], map.get(i).size());
 			
 		}
@@ -289,6 +302,14 @@ public class UndirectedGraph {
 			System.out.println();
 		}*/
 		//primMST(components);
+		System.out.println("Forest is -");
+		for (int i=0; i<vertices; i++) {
+			for (int j=0; j<vertices; j++) {
+				System.out.print(output[i][j]+ " ");
+
+			}
+			System.out.println();
+		}
 		
 
 
